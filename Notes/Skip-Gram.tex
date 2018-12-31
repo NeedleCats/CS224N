@@ -1,0 +1,102 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{bm}
+
+\begin{document}
+
+\begin{equation}
+	CE(\bm{y}, \bm{\hat{y}}) = -\bm{y}^\top\cdot \ln(\hat{\bm{y}}) = -\sum_i^V y_i \ln (\hat{y}_i)
+\end{equation}
+
+\begin{equation}
+	\hat{y}_o = p(o|c)=\frac{\exp(\bm{u}_o^\top\bm{v}_c ) }{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}
+\end{equation}
+
+\begin{flalign}
+	\begin{split}
+			\frac{\partial \ln\hat{y}_o}{\partial \bm{v}_c} 
+			& = \frac{\partial \ln\frac{\exp(\bm{u}_o^\top\bm{v}_c ) }{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}}{\partial \bm{v}_c} \\
+			& = \frac{\partial \ln\exp(\bm{u}_o^\top\bm{v}_c )}{\partial \bm{v}_c} - \frac{\partial \ln\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{v}_c} \\
+			& = \frac{\partial \bm{u}_o^\top\bm{v}_c }{\partial \bm{v}_c} - \frac{\partial \ln\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{v}_c} \\
+			& = \bm{u}_o - \frac{\partial \ln\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{v}_c} \\
+			& = \bm{u}_o -\frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \frac{\partial\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{v}_c} \\
+			& = \bm{u}_o -\frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \sum^V_{w=1}\frac{ \partial\exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{v}_c} \\
+			& = \bm{u}_o -\frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \sum^V_{w=1}\exp(\bm{u}_w^\top\bm{v}_c) \frac{ \partial(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{v}_c} \\
+			& = \bm{u}_o -\frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \sum^V_{w=1}\exp(\bm{u}_w^\top\bm{v}_c) \bm{u}_w \\
+			& = \bm{u}_o -\sum^V_{w=1} \frac{\exp(\bm{u}_w^\top\bm{v}_c)}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot  \bm{u}_w \\
+			& = \bm{u}_o - \sum^V_{w=1} p(w|c)\cdot  \bm{u}_w \\
+			& = \bm{u}_o - \sum^V_{w=1}\hat{y}_w \bm{u}_w \\	\end{split} 
+\end{flalign}
+
+\begin{flalign}
+	\begin{split}
+		\frac{\partial CE(\bm{y}, \bm{\hat{y}})}{\partial \bm{v}_c} & = \frac{\partial -\sum_i^V y_i \ln (\hat{y}_i)}{\bm{v}_c} \\
+			& = -\frac{\partial \sum_i^V y_i \ln (\hat{y}_i)}{\bm{v}_c} \\
+			& = -\frac{\partial \ln (\hat{y}_o)}{\bm{v}_c} \ \text{assume  $y_o$ is the true class} \\
+			& = -\bm{u}_o + \sum^V_{w=1}\hat{y}_w \bm{u}_w \\
+			& = -\bm{u}_o + \bm{U} \cdot \bm{\hat{y}} \\
+			& = \bm{U} \cdot (\bm{\hat{y}} - \bm{y}) \\  
+			& \text{To be noticed, $\bm{y}$ and $\bm{\hat{y}}$ are column vectors,  } \\
+			& \text{and $\bm{U} = [u_1...u_V]$ in which $u(s)$ are column vectors also}
+	\end{split}
+\end{flalign}
+
+\newpage
+
+\begin{flalign}
+	\begin{split}
+			\frac{\partial \ln\hat{y}_o}{\partial \bm{u}_o} 
+			& = \frac{\partial \ln\frac{\exp(\bm{u}_o^\top\bm{v}_c ) }{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}}{\partial \bm{u}_o} \\
+			& = \frac{\partial \ln\exp(\bm{u}_o^\top\bm{v}_c ) }{\partial \bm{u}_o} - \frac{\partial \ln\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{u}_o} \\
+			& = \bm{v}_c - \frac{\partial \ln\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{u}_o} \\
+			& = \bm{v}_c - \frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \frac{\partial \sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{u}_o} \\
+			& = \bm{v}_c - \frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \frac{\partial \exp(\bm{u}_o^\top\bm{v}_c)}{\partial \bm{u}_o} \\
+			& = \bm{v}_c - \frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \exp(\bm{u}_o^\top\bm{v}_c) \cdot \frac{\partial(\bm{u}_o^\top\bm{v}_c)}{\partial \bm{u}_o} \\
+			& = \bm{v}_c - \frac{\exp(\bm{u}_o^\top\bm{v}_c)}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)} \cdot \bm{v}_c \\
+			& = \bm{v}_c - p (o|c)\cdot \bm{v}_c \\
+			& =  (1- \hat{y}_o)\cdot \bm{v}_c \\
+		\end{split} 
+\end{flalign}
+
+
+\begin{flalign}
+	\begin{split}
+			\frac{\partial \ln\hat{y}_o}{\partial \bm{u}_x} 
+			& = \frac{\partial \ln\frac{\exp(\bm{u}_o^\top\bm{v}_c ) }{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}}{\partial \bm{u}_x} \\
+			& = \frac{\partial \ln\exp(\bm{u}_o^\top\bm{v}_c ) }{\partial \bm{u}_x} - \frac{\partial \ln\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{u}_x} \\
+			& = -\frac{\partial \ln\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{u}_x} \\
+			& = - \frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \frac{\partial \sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}{\partial \bm{u}_x} \\
+			& = - \frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \frac{\partial \exp(\bm{u}_x^\top\bm{v}_c)}{\partial \bm{u}_x} \\
+			& = - \frac{1}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)}\cdot \exp(\bm{u}_x^\top\bm{v}_c) \cdot \frac{\partial(\bm{u}_x^\top\bm{v}_c)}{\partial \bm{u}_x} \\
+			& = - \frac{\exp(\bm{u}_x^\top\bm{v}_c)}{\sum^V_{w=1} \exp(\bm{u}_w^\top\bm{v}_c)} \cdot \bm{v}_c \\
+			& = - p (x|c)\cdot \bm{v}_c \\
+			& = - \hat{y}_x \cdot \bm{v}_c \\
+		\end{split} 
+\end{flalign}
+
+\begin{flalign}
+	\begin{split}
+		\frac{\partial CE(\bm{y}, \bm{\hat{y}})}{\partial \bm{U}} & = \frac{\partial -\sum_i^V y_i \ln (\hat{y}_i)}{\bm{U}} \\
+			& = -\frac{\partial \sum_i^V y_i \ln (\hat{y}_i)}{\bm{U}} \\
+			& = -\frac{\partial \ln (\hat{y}_o)}{\bm{U}} \ \text{assume  $y_o$ is the true class} \\
+			& = -\frac{\partial \ln (\hat{y}_o)}{\bm{U}}
+	\end{split}
+\end{flalign}
+
+\begin{flalign}
+\begin{split}
+\frac{\partial CE(\bm{y}, \bm{\hat{y}})}{\partial \bm{U}} & = 
+\left\{
+	\begin{array}{lr}
+			=  (\hat{y}_o - 1)\cdot \bm{v}_c, & w = o \\
+            = \hat{y}_x \cdot \bm{v}_c, & w \neq o \\  
+             \end{array}
+\right. \\
+ & = \bm{v}_c \cdot (\bm{\hat{y}} - \bm{y})^\top \\
+& \text{To be noticed, $\bm{v}_c$, $\bm{y}$ and $\bm{\hat{y}}$ are column vectors} \\
+& \text{In numpy you should use np.outer} \\
+\end{split}
+\end{flalign}
+
+\end{document}

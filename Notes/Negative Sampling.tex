@@ -1,0 +1,45 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{bm}
+
+\begin{document}
+
+\begin{equation}
+	J_{neg-sample}(o, \bm{v}_c, \bm{U}) = -\ln(\sigma(\bm{u}_o^\top\bm{v}_c)) - \sum^K_{k=1}\ln(\sigma(-\bm{u}_k^\top\bm{v}_c))
+\end{equation}
+
+\begin{equation}
+	\sigma(x) = \frac{1}{1+e^{-x}}
+\end{equation}
+
+\begin{flalign}
+	\begin{split}
+		\frac{\partial\sigma(x)}{\partial x} & = -\frac{1}{{(1+e^{-x})}^2}\cdot e^{-x}\cdot(-1)\\
+		& = \frac{1}{1+e^{-x}} \cdot \frac{e^{-x}}{1+e^{-x}} \\
+		& = \frac{1}{1+e^{-x}} \cdot \left(1 - \frac{1}{1+e^{-x}}\right) \\
+		& = \sigma(x)\cdot(1-\sigma(x))
+	\end{split}
+\end{flalign}
+
+\begin{flalign}
+	\begin{split}
+		\frac{\partial J}{\partial \bm{v}_c} & = -\frac{\partial \ln(\sigma(\bm{u}_o^\top\bm{v}_c))}{\partial \bm{v}_c} - \frac{\partial \sum^K_{k=1}\ln(\sigma(-\bm{u}_k^\top\bm{v}_c))}{\partial \bm{v}_c}\\
+		& = -\frac{1}{\sigma(\bm{u}_o^\top\bm{v}_c)}\sigma(\bm{u}_o^\top\bm{v}_c)(1-\sigma(\bm{u}_o^\top\bm{v}_c)\bm{u}_o \\
+		& \quad -\sum^K_{k=1}\frac{1}{\sigma(-\bm{u}_k^\top\bm{v}_c)}\sigma(-\bm{u}_k^\top\bm{v}_c)(1-\sigma(-\bm{u}_k^\top\bm{v}_c)(-\bm{u}_k)\\
+		& = (\sigma(\bm{u}_o^\top\bm{v}_c)-1)\bm{u}_o + \sum^K_{k=1}(\sigma(-\bm{u}_k^\top\bm{v}_c)-1)(-\bm{u}_k)
+	\end{split}
+\end{flalign}
+
+\begin{flalign}
+	\begin{split}
+		\frac{\partial J}{\partial \bm{u}_o} = (\sigma(\bm{u}_o^\top\bm{v}_c)-1)\bm{v}_c
+	\end{split}
+\end{flalign}
+
+\begin{flalign}
+	\begin{split}
+		\frac{\partial J}{\partial \bm{u}_k} = \sum^K_{k=1}(\sigma(-\bm{u}_k^\top\bm{v}_c)-1)(-\bm{v}_c)
+	\end{split}
+\end{flalign}
+
+\end{document}
